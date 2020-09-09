@@ -44,4 +44,24 @@ Comparaison avec les simulation réalisées en 2)
 Comparaison avec le comportement réel
 Conclusion
 
-source : https://perso.esiee.fr/~kocikr/ecas.html
+
+
+===== Compilation d'un projet =======
+
+Chaque projet est lancé via un script qui exécute un Makefile
+Dans le Makefile : 1ère ligne : fichier objet cible modifiable
+                    ligne KIT : ajouter "lan". ex: arcom11.lan.esiee.fr
+Commandes du Makefile :
+make ./     : lance le script
+make clean  : nettoie le projet des fichiers générés
+make send   : lance le programme sur la carte
+
+ID ssh  : arcom
+MDP ssh : arcom
+
+Après connection sur la carte Arcom:
+$<>: ./runarcom
+dans runarcom : $1.ko : le "$1" correspond à l'argument passé au module à exécuter 
+
+
+source & docs : https://perso.esiee.fr/~kocikr/ecas.html
