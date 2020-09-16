@@ -26,6 +26,7 @@ MODULE_LICENSE("GPL");
 #define N_BOUCLE 10000000
 #define NUMERO 1
 #define PRIORITE 1
+#define BASE 0x320
 
 /* RT_TASK */
 static RT_TASK tache_horloge,tache_can;
@@ -72,6 +73,10 @@ static void tpcan_exit(void) {
 
 }
 
+static int ADC_read(void)
+{
+	
+}
 
 
 module_init(tpcan_init);
