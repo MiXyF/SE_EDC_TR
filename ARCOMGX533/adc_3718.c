@@ -100,7 +100,7 @@ static void setChannel(int in_channel)
 
 static void ADRangeSelect(int channel, int range)
 {
-	if (range > 8 | range < 0 ) 
+	if (range >= 8 | range <= 0 ) 
 	{
 		printk("Range value %d not usable \r\n",range);
 		exit(EXIT_FAILURE);
