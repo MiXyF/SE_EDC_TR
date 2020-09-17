@@ -111,7 +111,20 @@ static void ADRangeSelect(int channel, int range)
 
 static u16 ReadAD(void)
 {
-	
+	u16 output;
+	printk("starting AD conversion. Writing in Register BASE \r\n");
+	outb(0,BASE);
+	if ( (inb(STATUS) & (1 << 4) ) == 1)
+	{
+		printk("Conversion successfull. Writing data from register to memory\r\n");
+		output =  (inb(DATA_REG) << 8) | (inb(BASE) & 0xff);
+		printk("Value from ADC : %d \r\n",ouput);
+		return ouput;
+	}
+	else
+	{
+		printk("Error on AD conversion, check STATUS register %x \r\n",inb(STATUS);
+	}
 	
 }
 module_init(tpcan_init);
