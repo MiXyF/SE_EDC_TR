@@ -1,7 +1,5 @@
 #include<linux/init.h>
 #include<linux/module.h>
-#include <stdio.h>
-#include <errno.h>
 #include <asm/io.h>
 #include <asm/irq.h>
 #include <rtai.h>
@@ -23,6 +21,7 @@ MODULE_LICENSE("GPL");
 static RT_TASK tache_horloge,tache_can;
 static int temps=0;
 u16 ADC_out;
+int temp;
 /* RT_TASK */
 /* tache generation dent de scie */
 void saw(long arg)
@@ -31,6 +30,8 @@ void saw(long arg)
 	ADC_out = ReadAD();
 	printk("ADC value : %d \r\n",ADC_out);
 	rt_task_wait_period();
+
+
  
 }
 
@@ -40,8 +41,7 @@ static int tpcan_init(void) {
   int ierr;
   RTIME now;
 	printk("Initializing ADC\r\n");
-	init3718();	
-	printk("Initializing Channel and range\r\n");
+	printk("Init successfull, Initializing Channel and range\r\n");
 	setChannel(1);
 	ADRangeSelect(1,1);
     /* creation tache périodiques*/
@@ -54,8 +54,9 @@ static int tpcan_init(void) {
  
  
  
- return(0);
+ 	return(0);
 }
+
 
 static void tpcan_exit(void) {
  stop_rt_timer(); 

@@ -1,4 +1,7 @@
 //Librairie de l'ADC 3718//
+#ifndef __3718__
+#define	__3718__
+#include<asm/io.h>
 
 #define BASE					0x320	//Write any value to trigger conversion in 4 first bits
 #define DATA_REG			BASE+1	//Data register with BASE 4 High bits
@@ -27,14 +30,9 @@
 #define RANGE_0_TO_1_25			7
 #define RANGE_10_NEG_PLS		8
 
+int 	init3718(void);
+void setChannel(int in_channel);
+void ADRangeSelect(int channel, int range);
+u16 ReadAD(void);
 
-static int 	init3718(void);
-static void setChannel(int in_channel);
-static void ADRangeSelect(int channel, int range);
-static u16 	ReadAD(void);
-
-
-/**
-ex : OUTPORTB (BASE+2, 5); SET POINTER TO CHANNEL 5
-OUTPORTB (BASE+1, 3); RANGE CODE FOR ±0.625V
-*/
+#endif

@@ -1,4 +1,4 @@
-obj-m	   := adc_3718.o test_can.o 3718.o
+obj-m	   := 3718.o test_can.o 
 
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
 KIT = arcom14.lan.esiee.fr
