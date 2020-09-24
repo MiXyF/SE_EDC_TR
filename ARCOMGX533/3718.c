@@ -15,6 +15,7 @@ static int init3718(void)
 	
 	setChannel(0);
 	outb(CTR_MODE_NO_INT,CONTROL); //Interrupt enabled for DMA | Interrupt level N/A | DMA enabled | Trigger source : software
+	printk("DATA register on init : 0x%x\r\n",inb(DATA_REG));
 	//if (inb(STATUS) == STATUS_INIT)
 	//{
 	//	printk("init complete, MUX on 16 channels mode, ready to convert \r\n");
@@ -48,17 +49,26 @@ static u16 ReadAD(void)
 {
 	u16 output;
 	printk("starting AD conversion. Writing in Register BASE \r\n");
-	outb(0,BASE);
-	if ( (inb(STATUS) & (1 << 4) ) == 1)
+	outb(0x01,BASE); 	
+	printk("BASE register : 0x%x\r\n",inb(BASE));
+	printk("DATA register : 0x%x\r\n",inb(DATA_REG));
+	/**inb(STATUS);
+	printk("Conversion successfull. Writing data from register to memory\r\n");
+	output =  (inb(DATA_REG) << 8) | (inb(BASE) & 0xff);
+	printk("Value from ADC : %d \r\n",output);
+	return output;**/
+	if ( (inb(STATUS) & 0x10 ) )
 	{
+		printk("STATUS register : 0x%x\r\n",(inb(STATUS)));
 		printk("Conversion successfull. Writing data from register to memory\r\n");
-		output =  (inb(DATA_REG) << 8) | (inb(BASE) & 0xff);
-		printk("Value from ADC : %d \r\n",output);
+		output =  ((inb(DATA_REG) << 4) + (inb(BASE) & 0xf0));
+		printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
+		printk("Value from ADC : 0x%x \r\n",output);
 		return output;
 	}
 	else
 	{
-		printk("Error on AD conversion, check STATUS register %x \r\n",inb(STATUS));
+		printk("Error on AD conversion, check STATUS register 0x%02x \r\n",inb(STATUS));
 	}
 	
 }

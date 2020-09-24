@@ -31,8 +31,6 @@ void saw(long arg)
 	printk("ADC value : %d \r\n",ADC_out);
 	rt_task_wait_period();
 
-
- 
 }
 
 
@@ -42,8 +40,8 @@ static int tpcan_init(void) {
   RTIME now;
 	printk("Initializing ADC\r\n");
 	printk("Init successfull, Initializing Channel and range\r\n");
-	setChannel(1);
-	ADRangeSelect(1,1);
+	//setChannel(0);
+	ADRangeSelect(0,RANGE_0_TO_10);		
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  
