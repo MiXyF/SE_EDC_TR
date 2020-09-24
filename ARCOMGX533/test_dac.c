@@ -33,8 +33,9 @@ static int temps=0;
 
 /* tache generation dent de scie */
 void saw(long arg) {
-
-  int i=0;
+	int a ;
+	initPCM3712() ;
+  	//int i=0;
 	printk( "\n\n C'est fait \n\n") ; 
 
  /*  while (1) 
@@ -53,8 +54,8 @@ static int tpcan_init(void) {
 
   int ierr;
   RTIME now;
-
-  	printk("\n Toto \n") ;
+ 
+  	printk("\n Init PCM3712 done  \n") ;
     /* creation tache périodiques */
   rt_set_oneshot_mode();
   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  
