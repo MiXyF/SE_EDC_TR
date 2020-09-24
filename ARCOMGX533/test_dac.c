@@ -28,25 +28,25 @@ MODULE_LICENSE("GPL");
 #define PRIORITE 1
 
 /* RT_TASK */
-static RT_TASK tache_horloge,tache_can;
-static int temps=0;
+static RT_TASK tache_horloge ;
+//,tache_can;
+//static int temps=0;
 
 /* tache generation dent de scie */
 void saw(long arg) {
-	int a ;
+	int i=0;
 	initPCM3712() ;
-  	//int i=0;
 	printk( "\n\n C'est fait \n\n") ; 
 
- /*  while (1) 
+  while (1) 
    {
     if(i>=4096){
       i=0;}
     else{i=i+100;}
    
-    PCM3712setda0(i);
+    SetDA(0,i);
     rt_task_wait_period();
- } */
+ } 
 }
 
 
@@ -74,7 +74,6 @@ static void tpcan_exit(void) {
  rt_task_delete(&tache_horloge);
 
 }
-
 
 
 module_init(tpcan_init);

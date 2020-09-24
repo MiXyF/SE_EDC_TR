@@ -66,5 +66,6 @@ static void exit(void) {
 
 module_init(initPCM3712);
 module_exit(exit);
+
 EXPORT_SYMBOL(initPCM3712) ; // Rend public les fonction pour les autres modules (.c)
 EXPORT_SYMBOL(SetDA) ;

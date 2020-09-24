@@ -31,28 +31,12 @@ MODULE_LICENSE("GPL");
 static RT_TASK tache_horloge,tache_can;
 static int temps=0;
 
-/* tache generation dent de scie */
-void saw(long arg) {
-
-  int i=0;
-	printk( "\n\n C'est fait \n\n") ; 
-
- /*  while (1) 
-   {
-    if(i>=4096){
-      i=0;}
-    else{i=i+100;}
-   
-    PCM3712setda0(i);
-    rt_task_wait_period();
- } */
-}
 
 
 static int tpcan_init(void) {
 
   int ierr;
-  RTIME now;
+  //RTIME now;
 
   	printk("\n Toto \n") ;
     /* creation tache périodiques */
