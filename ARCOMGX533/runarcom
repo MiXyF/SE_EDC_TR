@@ -10,20 +10,18 @@ read junk
 sudo insmod /usr/realtime/modules/rtai_hal.ko
 sudo insmod /usr/realtime/modules/rtai_sched.ko
 sudo insmod 3718.ko
-sudo insmod test_can.ko
 sudo insmod 3712.ko
+sudo insmod test_can.ko
 sudo insmod test_.ko
-sudo insmod $1.ko
 
 lsmod
 echo "Le programme fontionne"
 echo "Tapez <return> pour l'arreter."
 read junk
 
-sudo rmmod test_can
-sudo rmmod 3718
-sudo rmmod $1
 sudo rmmod test_
+sudo rmmod test_can
 sudo rmmod 3712
+sudo rmmod 3718
 sudo rmmod rtai_sched
 sudo rmmod rtai_hal
