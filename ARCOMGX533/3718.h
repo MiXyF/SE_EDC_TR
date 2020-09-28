@@ -30,7 +30,7 @@
 #define RANGE_0_TO_1_25			7
 #define RANGE_10_NEG_PLS		8
 
-int 	init3718(void);
+int init3718(void);
 void setChannel(int in_channel);
 void ADRangeSelect(int channel, int range);
 u16 ReadAD(void);
