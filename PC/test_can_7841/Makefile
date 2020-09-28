@@ -1,4 +1,4 @@
-obj-m	   := 3712.o test_.o
+obj-m	   := TP1.o 7841.o
 
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
 KIT = arcom4.lan.esiee.fr

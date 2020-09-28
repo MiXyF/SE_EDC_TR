@@ -1,0 +1,1 @@
+cmd_/user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/PC/test_can_7841/TP1.ko := ld -m elf_i386 -m elf_i386 -r -o /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/PC/test_can_7841/TP1.ko /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/PC/test_can_7841/TP1.o /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/PC/test_can_7841/TP1.mod.o

@@ -34,18 +34,19 @@ static int temps=0;
 /* tache generation dent de scie */
 void saw(long arg) {
 
-  int i=0;
+	int i=0;
+        initPCM3712() ;
 	printk( "\n\n C'est fait \n\n") ; 
 
- /*  while (1) 
+  while (1) 
    {
     if(i>=4096){
       i=0;}
     else{i=i+100;}
    
-    PCM3712setda0(i);
+    SetDA(0,2048);
     rt_task_wait_period();
- } */
+ } 
 }
 
 
@@ -53,8 +54,8 @@ static int tpcan_init(void) {
 
   int ierr;
   RTIME now;
-
-  	printk("\n Toto \n") ;
+ 
+  	printk("\n Init PCM3712 done  \n") ;
     /* creation tache périodiques */
   rt_set_oneshot_mode();
   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  
@@ -73,7 +74,6 @@ static void tpcan_exit(void) {
  rt_task_delete(&tache_horloge);
 
 }
-
 
 
 module_init(tpcan_init);

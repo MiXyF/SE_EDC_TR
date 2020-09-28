@@ -42,7 +42,7 @@ void SetDA(int channel, u16 value)
 	u8 value_msb ;
 	
 	value_msb = (value>>8) ;
-	value_lsb = ((value & 0xF0)>>8) ;
+	value_lsb = (value & 0x0F) ;
 	
 	// Value sur 12 bits or int sur 16 bits
 	if (channel == 0){
@@ -61,7 +61,7 @@ void SetDA(int channel, u16 value)
 static void exit(void) {
 
 }
-
+  
 
 
 module_init(initPCM3712);
