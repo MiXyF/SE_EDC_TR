@@ -28,13 +28,13 @@ static int init3718(void)
 	//}
 }
 
-static void setChannel(int in_channel)
+void setChannel(int in_channel)
 {
 	outb(MUX_SCAN,in_channel);
 	printk("Channel set to n°%d\r\n",in_channel);
 }
 
-static void ADRangeSelect(int channel, int range)
+void ADRangeSelect(int channel, int range)
 {
 	if ((range >= 8) || (range <= 0) ) 
 	{
@@ -45,7 +45,7 @@ static void ADRangeSelect(int channel, int range)
 	outb(range,DATA_REG);
 }
 
-static u16 ReadAD(void)
+u16 ReadAD(void)
 {
 	u16 output;
 	printk("starting AD conversion. Writing in Register BASE \r\n");
@@ -65,8 +65,10 @@ static u16 ReadAD(void)
 		output =  ((inb(DATA_REG) << 4) + (inb(BASE) & 0xf0));
 		printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
 		printk("Value from ADC : 0x%x \r\n",output);
-		return output;
+
+	return output;
 	}
+	
 //	else
 //	{
 //		printk("Error on AD conversion, check STATUS register 0x%02x \r\n",inb(STATUS));

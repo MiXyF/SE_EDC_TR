@@ -40,7 +40,7 @@ static int tpcan_init(void) {
   RTIME now;
 	printk("Initializing ADC\r\n");
 	printk("Init successfull, Initializing Channel and range\r\n");
-	//setChannel(0);
+	setChannel(0);
 	ADRangeSelect(0,RANGE_0_TO_10);		
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
