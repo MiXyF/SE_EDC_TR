@@ -49,6 +49,7 @@ static u16 ReadAD(void)
 {
 	u16 output;
 	printk("starting AD conversion. Writing in Register BASE \r\n");
+	printk("STATUS register before test: 0x%x\r\n",(inb(STATUS)));
 	outb(0x01,BASE); 	
 	printk("BASE register : 0x%x\r\n",inb(BASE));
 	printk("DATA register : 0x%x\r\n",inb(DATA_REG));
@@ -57,7 +58,7 @@ static u16 ReadAD(void)
 	output =  (inb(DATA_REG) << 8) | (inb(BASE) & 0xff);
 	printk("Value from ADC : %d \r\n",output);
 	return output;**/
-	if ( (inb(STATUS) & 0x10 ) )
+	while ( (inb(STATUS) & 0x10 ) )
 	{
 		printk("STATUS register : 0x%x\r\n",(inb(STATUS)));
 		printk("Conversion successfull. Writing data from register to memory\r\n");
@@ -66,10 +67,10 @@ static u16 ReadAD(void)
 		printk("Value from ADC : 0x%x \r\n",output);
 		return output;
 	}
-	else
-	{
-		printk("Error on AD conversion, check STATUS register 0x%02x \r\n",inb(STATUS));
-	}
+//	else
+//	{
+//		printk("Error on AD conversion, check STATUS register 0x%02x \r\n",inb(STATUS));
+//	}
 	
 }
 void exit()
