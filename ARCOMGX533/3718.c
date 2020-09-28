@@ -79,7 +79,7 @@ u16 ReadAD(void)
 	}
 	
 }
-void exit()
+void exit2()
 {}
 
 //u16 convert(u16 adc_raw_output, int range)
@@ -87,7 +87,7 @@ void exit()
 //	int sel;
 //}
 module_init(init3718);
-module_exit(exit);
+module_exit(exit2);
 
 EXPORT_SYMBOL(ReadAD);
 EXPORT_SYMBOL(ADRangeSelect);
