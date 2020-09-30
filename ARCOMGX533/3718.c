@@ -13,7 +13,7 @@
 static int init3718(void)
 {
 	
-	setChannel(0);
+	//setChannel(1);
 	outb(CTR_MODE_NO_INT,CONTROL); //Interrupt enabled for DMA | Interrupt level N/A | DMA enabled | Trigger source : software
 	printk("DATA register on init : 0x%x\r\n",inb(DATA_REG));
 	//if (inb(STATUS) == STATUS_INIT)
@@ -31,7 +31,7 @@ static int init3718(void)
 
 void setChannel(int in_channel)
 {
-	outb(MUX_SCAN,in_channel);
+	outb(in_channel,MUX_SCAN);
 	printk("Channel set to n°%d\r\n",in_channel);
 }
 
@@ -62,15 +62,18 @@ u16 ReadAD(void)
 	return output;**/
 	if ( (inb(STATUS) & 0x70 ) )
 	{
+		printk("Acquisition ready, status register ready\r\n");
+		printk("BASE register : 0x%x read register : %d\r\n", inb(BASE), (inb(BASE) %2));
 		output =  ((inb(DATA_REG) << 4) | ((inb(BASE) >> 4) & 0x0f));
-		switch (inb(STATUS) & 0xFE)
+		printk("hex value from adc : 0x%x \r\n",output);
+		switch (inb(STATUS) %2 )
 		{
 			case 1:
-				printk("Value from ADC : 0x%x from channel n°0 \r\n",output);	
+				printk("Value from ADC : %d from channel n°0 \r\n",output);	
 			break;
 			
 			case 0:
-				printk("Value from ADC : 0x%x from channel n°1 \r\n",output);	
+				printk("Value from ADC : %d from channel n°1 \r\n",output);	
 			break;
 		}
 		
