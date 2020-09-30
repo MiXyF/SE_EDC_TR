@@ -42,8 +42,8 @@ static int tpcan_init(void) {
   RTIME now;
 	printk("Initializing ADC\r\n");
 	printk("Init successfull, Initializing Channel and range\r\n");
-	setChannel(0);
-	ADRangeSelect(0,RANGE_10_NEG_PLS);		
+	setChannel(MUX_CHANNEL0TO1);
+	ADRangeSelect(MUX_CHANNEL0TO1,RANGE_10_NEG_PLS);		
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  

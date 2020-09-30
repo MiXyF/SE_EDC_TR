@@ -62,11 +62,23 @@ u16 ReadAD(void)
 	return output;**/
 	if ( (inb(STATUS) & 0x70 ) )
 	{
-		printk("STATUS register : 0x%x\r\n",(inb(STATUS)));
-		printk("Conversion successfull. Writing data from register to memory\r\n");
 		output =  ((inb(DATA_REG) << 4) | ((inb(BASE) >> 4) & 0x0f));
-		printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
-		printk("Value from ADC : 0x%x \r\n",output);
+		switch (inb(STATUS) & 0xFE)
+		{
+			case 1:
+				printk("Value from ADC : 0x%x from channel n°0 \r\n",output);	
+			break;
+			
+			case 0:
+				printk("Value from ADC : 0x%x from channel n°1 \r\n",output);	
+			break;
+		}
+		
+		//printk("STATUS register : 0x%x\r\n",(inb(STATUS)));
+		//printk("Conversion successfull. Writing data from register to memory\r\n");
+		
+		//printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
+		//printk("Value from ADC : 0x%x \r\n",output);
 
 	return output;
 	}
