@@ -15,7 +15,7 @@ MODULE_LICENSE("GPL");
 /* define pour tache periodique */
 #define STACK_SIZE  2000
 #define TICK_PERIOD 1000000    //  1 ms
-#define PERIODE_CONTROL 100000000 //20ms
+#define PERIODE_CONTROL 100000000 //100ms
 #define N_BOUCLE 10000000
 #define NUMERO 1
 #define PRIORITE 1
