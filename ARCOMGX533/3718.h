@@ -18,14 +18,14 @@
 
 #define CTR_MODE_NO_INT 		0
 #define CTR_MODE_INT_DMA		0x10000100
-#define STATUS_INIT					0x00100000
+#define STATUS_INIT			0x00100000
 #define	RANGE_5_NEG_PLS			0
 #define SINGLE_CHANNEL_0		0
 #define SINGLE_CHANNEL_1		0x11
 #define SINGLE_CHANNEL_2		0x22
 #define SINGLE_CHANNEL_3		0x33
 #define SINGLE_CHANNEL_4		0x44
-#define MUX_CHANNEL0TO1			0x00010000
+#define MUX_CHANNEL0TO1			0x10
 
 #define	RANGE_2_5_NEG_PLS		1
 #define RANGE_1_25_NEG_PLS	2
@@ -36,9 +36,9 @@
 #define RANGE_0_TO_1_25			7
 #define RANGE_10_NEG_PLS		8
 
-int init3718(void);
+//int init3718(void);
 void setChannel(int in_channel);
-void ADRangeSelect(int channel, int range);
+void ADRangeSelect(u8 channel, int range);
 u16 ReadAD(void);
 
 #endif

@@ -35,15 +35,49 @@ void setChannel(int in_channel)
 	printk("Channel set to n°%d\r\n",in_channel);
 }
 
-void ADRangeSelect(int channel, int range)
+void ADRangeSelect(u8 channel, int range)
 {
+	u8 start;
+	u8 end;
+	u8 transitoire;
+	int i ;
+	
 	if ((range > 8) | (range < 0) ) 
 	{
 		printk("Range value %d not usable \r\n",range);
-		return -1;
-	}	
-	outb(channel,MUX_SCAN);
+		//return -1; C'est un void on est pas sencé retourné une  valeur ou changer le type de prototypage
+	}
+
+	
+	start = channel & 0x0F ; //Collect the start channel
+	end = channel >> 4 ; // Collect the end channel
+	printk("\n Start channel is n°%d\r\n",start);
+	printk("End channel is n°%d\r\n \n",end);
+	if(start != end)
+	{
+		if(start < end)
+		{
+			transitoire = start ;
+			start = end ;
+			end = transitoire ;
+		}	
+
+		for (i = start ; i <= end ; i++) // Set the range for all channel used or for just 1 if start = end
+		{
+			outb(i,MUX_SCAN);
+			outb(range,DATA_REG);
+		}
+
+	setChannel(channel) ; // Set back the original channel
+	}
+	
+	else 
+	{
 	outb(range,DATA_REG);
+	}
+	
+	//outb(channel,MUX_SCAN);
+	//outb(range,DATA_REG);
 }
 
 u16 ReadAD(void)
@@ -90,11 +124,11 @@ u16 ReadAD(void)
 	else
 	{
 		printk("Error on AD conversion, check STATUS register 0x%02x \r\n",inb(STATUS));
-		return NULL;	
+		return -1 ;	
 	}
 	
 }
-void exit2()
+static void exit2(void)
 {}
 
 //u16 convert(u16 adc_raw_output, int range)

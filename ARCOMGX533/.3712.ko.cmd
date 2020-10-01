@@ -1,0 +1,1 @@
+cmd_/user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/ARCOMGX533/3712.ko := ld -m elf_i386 -m elf_i386 -r -o /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/ARCOMGX533/3712.ko /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/ARCOMGX533/3712.o /user/fortunaj/homedir/Documents/E5/Etude_De_Cas/SE_EDC_TR/ARCOMGX533/3712.mod.o

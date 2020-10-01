@@ -20,8 +20,9 @@ MODULE_LICENSE("GPL");
 #define NUMERO 1
 #define PRIORITE 1
 
-static RT_TASK tache_horloge,tache_can;
-static int temps=0;
+static RT_TASK tache_horloge;
+//,tache_can;
+//static int temps=0;
 u16 ADC_out;
 int temp;
 /* RT_TASK */
@@ -45,9 +46,10 @@ static int tpcan_init(void) {
   RTIME now;
 	printk("Initializing ADC\r\n");
 	printk("Init successfull, Initializing Channel and range\r\n");
-	ADRangeSelect(SINGLE_CHANNEL_0,RANGE_10_NEG_PLS);
-	ADRangeSelect(SINGLE_CHANNEL_1,RANGE_10_NEG_PLS);
-	setChannel(MUX_CHANNEL0TO1);	
+	ADRangeSelect(MUX_CHANNEL0TO1,RANGE_10_NEG_PLS);
+	//ADRangeSelect(SINGLE_CHANNEL_0,RANGE_10_NEG_PLS);
+	//ADRangeSelect(SINGLE_CHANNEL_1,RANGE_10_NEG_PLS);
+	//setChannel(MUX_CHANNEL0TO1);	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  
