@@ -14,7 +14,7 @@ MODULE_LICENSE("GPL");
 
 /* define pour tache periodique */
 #define STACK_SIZE  2000
-#define TICK_PERIOD 1000000    //  1 ms
+#define TICK_PERIOD 20000000    //  10 ms
 #define PERIODE_CONTROL 100000000 //100ms
 #define N_BOUCLE 10000000
 #define NUMERO 1
@@ -31,9 +31,18 @@ void saw(long arg)
 {
 		while(1)
 		{
+		/**setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
 		printk("ADC value : %d \r\n",ADC_out);
 		SetDA(0,ADC_out);
+		rt_task_wait_period();
+		rt_task_wait_period();**/
+
+		setChannel(SINGLE_CHANNEL_1);
+		ADC_out = ReadAD();
+		printk("ADC value : %d \r\n",ADC_out);
+		SetDA(1,ADC_out);
+		rt_task_wait_period();
 		rt_task_wait_period();
 		}
 
@@ -46,9 +55,11 @@ static int tpcan_init(void) {
   RTIME now;
 	printk("Initializing ADC\r\n");
 	printk("Init successfull, Initializing Channel and range\r\n");
-	ADRangeSelect(MUX_CHANNEL0TO1,RANGE_10_NEG_PLS);
-	//ADRangeSelect(SINGLE_CHANNEL_0,RANGE_10_NEG_PLS);
+	//ADRangeSelect(MUX_CHANNEL0TO1,RANGE_10_NEG_PLS);
+	//setChannel(SINGLE_CHANNEL_1);
 	//ADRangeSelect(SINGLE_CHANNEL_1,RANGE_10_NEG_PLS);
+	//ADRangeSelect(SINGLE_CHANNEL_0,RANGE_10_NEG_PLS);
+	//setChannel(SINGLE_CHANNEL_1);  	
 	//setChannel(MUX_CHANNEL0TO1);	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();

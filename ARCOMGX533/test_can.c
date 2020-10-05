@@ -6,7 +6,8 @@
 #include <rtai_sched.h>
 #include <rtai_fifos.h>
 
-#include"3718.h"
+#include "3718.h"
+#include "3712.h"
 
 MODULE_LICENSE("GPL");
 
@@ -29,8 +30,16 @@ void saw(long arg)
 {
 		while(1)
 		{
+		setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
-		printk("ADC value : %d \r\n",ADC_out);
+		printk("ADC value on channel 0 : %d \r\n",ADC_out);
+		SetDA(SINGLE_CHANNEL_0,ADC_out);
+		rt_task_wait_period();
+
+		setChannel(SINGLE_CHANNEL_1);
+		ADC_out = ReadAD();
+		printk("ADC value on channel 1: %d \r\n",ADC_out);
+		SetDA(SINGLE_CHANNEL_1,ADC_out);
 		rt_task_wait_period();
 		}
 
@@ -42,9 +51,7 @@ static int tpcan_init(void) {
   int ierr;
   RTIME now;
 	printk("Initializing ADC\r\n");
-	printk("Init successfull, Initializing Channel and range\r\n");
-	//setChannel(MUX_CHANNEL0TO1); //ON PEUX PEUT ETRE S'EN PASSER
-	ADRangeSelect(MUX_CHANNEL0TO1,RANGE_10_NEG_PLS);		
+	printk("Init successfull, Initializing Channel and range\r\n");	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  

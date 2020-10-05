@@ -51,7 +51,7 @@ void SetDA(int channel, u16 value)
 		outb(value_lsb,PCM3712_DA0_LSB); // DEMANDER DECCALAGE OU APPLIQUER UN MASQuE
 		outb(value_msb,PCM3712_DA0_MSB);
 		}
-	if (channel == 1) {
+	if (channel == 0x11) {
 		outb(value_lsb,PCM3712_DA1_LSB);
 		outb(value_msb,PCM3712_DA1_MSB);
 		}
