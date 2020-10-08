@@ -8,6 +8,7 @@
 
 #include "3718.h"
 #include "3712.h"
+#include "clcmat.h"
 
 MODULE_LICENSE("GPL");
 
@@ -23,6 +24,9 @@ static RT_TASK tache_horloge;
 //,tache_can;
 //static int temps=0;
 u16 ADC_out;
+float Y[2]; 
+float X[4];
+float U;
 int temp;
 /* RT_TASK */
 /* tache generation dent de scie */
@@ -32,14 +36,19 @@ void saw(long arg)
 		{
 		setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
-		printk("ADC value on channel 0 : %d \r\n",ADC_out);
-		SetDA(SINGLE_CHANNEL_0,ADC_out);
+		Y[0] = ADC_out;
+		printk("ADC value on channel 0 : %d Y[@] = %d \r\n",ADC_out,Y[0]);
 		rt_task_wait_period();
 
 		setChannel(SINGLE_CHANNEL_1);
-		ADC_out = ReadAD();
-		printk("ADC value on channel 1: %d \r\n",ADC_out);
-		SetDA(SINGLE_CHANNEL_1,ADC_out);
+		Y[1] = (float)ReadAD();
+		printk("ADC value on channel 1: %lf \r\n",Y[1]);
+		
+		U = obscont(Y,X);
+		printk("U = %d \r\n",U*1000);
+		//affichage_mat(4,1,X[4]);
+		//affichage_mat(2,1,Y[2]);
+		SetDA(SINGLE_CHANNEL_1,U);	
 		rt_task_wait_period();
 		}
 
@@ -54,7 +63,7 @@ static int tpcan_init(void) {
 	printk("Init successfull, Initializing Channel and range\r\n");	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
-   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 0, 0);  
+   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 1, 0);  // avant dernier aramètre à un pour initialiser les calculs en virgules flottante
   start_rt_timer(nano2count(TICK_PERIOD));
   now = rt_get_time();
  

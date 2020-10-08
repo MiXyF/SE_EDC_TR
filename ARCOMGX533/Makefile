@@ -1,4 +1,4 @@
-obj-m	   := 3712.o 3718.o test_can.o
+obj-m	   := 3712.o 3718.o test_can.o clcmat.o
 
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
 KIT = arcom4.lan.esiee.fr

@@ -91,6 +91,7 @@ void ADRangeSelect(u8 channel, int range)
 u16 ReadAD(void)
 {
 	u16 output;
+	float ouputF; 
 	printk("starting AD conversion. Writing in Register BASE \r\n");
 	//printk("STATUS register before conversion: 0x%x\r\n",(inb(STATUS)));
 	outb(0x01,BASE);
@@ -124,7 +125,8 @@ u16 ReadAD(void)
 		
 		//printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
 		//printk("Value from ADC : 0x%x \r\n",output);
-
+	ouputF = output;
+	rt_printk("ouputF = %x \r\n",ouputF);
 	return output;
 	}
 	
