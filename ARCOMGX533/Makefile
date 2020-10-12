@@ -1,5 +1,6 @@
+#SRC_DIR := ${CURRENT}/src/
+#OBJ_DIR := ${CURRENT}/build/
 obj-m	   := 3712.o 3718.o test_can.o clcmat.o
-
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
 KIT = arcom4.lan.esiee.fr
 CURRENT = 2.6.16.14-arcom1
