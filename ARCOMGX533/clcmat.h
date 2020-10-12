@@ -18,6 +18,7 @@ MODULE_LICENSE("GPL");
 
 int affichage_mat(int row, int col, float matrice[row][col]);
 float obscont(float Y[2],float X[4]);
+float convertTomV(u16 ADC_in);
 
 
 

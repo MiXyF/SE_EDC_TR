@@ -8,7 +8,7 @@
 #include <rtai_fifos.h>
 
 MODULE_LICENSE("GPL");
-float obscont(float Y[2],float X[4])
+float obscont(float Y[2],float X[4]) //calculs effectués en mV
 {	
 	float U;	
 	//float   X[4][1] 	 = { 0, 0 , 0, 0 } ;
@@ -18,21 +18,21 @@ float obscont(float Y[2],float X[4])
 
 float   Adc[4][4]= 
 	{
-	     {  0.6300 , -0.1206 , -0.0008 , 0.0086 },
-	     { -0.0953 ,  0.6935 ,  0.0107 , 0.0012 },
-	     { -0.2896 , -1.9184 ,  1.1306 , 0.2351 },
-	     { -3.9680 , -1.7733 , -0.1546 , 0.7222 }	 
-	    } ;
+	     {  630.0 , -120.6 , -0.8 , 8.6 },
+	     { -0095.3 ,  0693.5 ,  0010.7 , 0001.2 },
+	     { -0.2896 , -1.9184 ,  1.1306 , 0235.1 },
+	     { -3968.0 , -1773.3 , -0154.6 , 0722.2 }	 
+	    };
 
 float Bdc[4][2] = 	{
-		{ 0.3658 , 0.1200 },
-		{ 0.0993 , 0.3070 },
-		{ 1.0887 , 2.0141 },
-		{ 3.1377 , 1.6599 }
+		{ 0365.8 , 0120.0 },
+		{ 0.0993 , 0307.0 },
+		{ 1088.7 , 2014.1 },
+		{ 3137.7 , 1659.9 }
 	};
 
 
-float Cdc[4] = 	{ -80.3092,-9.6237 ,-14.1215 ,-23.6260   } ;
+float Cdc[4] = 	{ -80309.2,-9623.7 ,-14121.5 ,-23626.0   } ;
 
 float Ddc[2] =  { 0.0 , 0.0 } ;	
 	
@@ -76,17 +76,33 @@ int affichage_mat(int row, int col, float matrice[row][col]){
   	printk("\n\n");
   	return 0 ;
 }
-/**int initclc(void) {
-//	return 0 ;
+float convertTomV(u16 ADC_in) // a corriger et compléter
+{
+	float temp;
+	if (ADC_in >= 2058)
+	{
+		temp = ADC_in * 2,441;	
+	}
+	else if (ADC_in <= 2038)
+	{
+		temp = -(ADC_in * 2,441);
+	}
 
+	else
+	{
+		temp = 0;	
+	}
+printk("converted value in V: %d \r\n",(int)(temp/1000));
+	return temp;
 }
-
-static void exitclc(void) {
-
-}*/
+/**u16 convert4DAC(float Command)
+{
+	
+}**/
 
 EXPORT_SYMBOL(obscont) ; // Rend public les fonction pour les autres modules (.c)
 EXPORT_SYMBOL(affichage_mat) ;
+EXPORT_SYMBOL(convertTomV);
 
 //module_init(initclc);
 //module_exit(exitclc);

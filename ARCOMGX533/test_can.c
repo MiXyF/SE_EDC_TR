@@ -36,19 +36,23 @@ void saw(long arg)
 		{
 		setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
-		Y[0] = ADC_out;
-		printk("ADC value on channel 0 : %d Y[@] = %d \r\n",ADC_out,Y[0]);
+		Y[0]=convertTomV(ADC_out);
+		//Y[0] = (float)ADC_out;
+		temp = (int)Y[0];
+		printk("ADC value on channel 0 : %d Y[0] = %d \r\n",ADC_out,temp);
 		rt_task_wait_period();
 
 		setChannel(SINGLE_CHANNEL_1);
-		Y[1] = (float)ReadAD();
-		printk("ADC value on channel 1: %lf \r\n",Y[1]);
+		ADC_out = ReadAD();
+		Y[1]=convertTomV(ADC_out);
+		temp = (int)Y[1];
+		printk("ADC value on channel 1 : %d Y[1] = %d \r\n",ADC_out,temp);
 		
 		U = obscont(Y,X);
-		printk("U = %d \r\n",U*1000);
+		printk("U = %d \r\n",(int)U);
 		//affichage_mat(4,1,X[4]);
 		//affichage_mat(2,1,Y[2]);
-		SetDA(SINGLE_CHANNEL_1,U);	
+		//SetDA(SINGLE_CHANNEL_1,U);	
 		rt_task_wait_period();
 		}
 
@@ -63,7 +67,7 @@ static int tpcan_init(void) {
 	printk("Init successfull, Initializing Channel and range\r\n");	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
-   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 1, 0);  // avant dernier aramètre à un pour initialiser les calculs en virgules flottante
+   ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 1, 0);  // avant dernier paramètre à un pour initialiser les calculs en virgules flottante
   start_rt_timer(nano2count(TICK_PERIOD));
   now = rt_get_time();
  
