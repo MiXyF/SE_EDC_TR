@@ -125,8 +125,6 @@ u16 ReadAD(void)
 		
 		//printk(" DATA_REG register : 0x%x, BASE register : 0x%x\r\n",inb(DATA_REG),inb(BASE)); 
 		//printk("Value from ADC : 0x%x \r\n",output);
-	ouputF = output;
-	rt_printk("ouputF = %x \r\n",ouputF);
 	return output;
 	}
 	

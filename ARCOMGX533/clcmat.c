@@ -78,22 +78,22 @@ int affichage_mat(int row, int col, float matrice[row][col]){
 }
 float convertTomV(u16 ADC_in) // a corriger et compléter
 {
-	float temp;
-	if (ADC_in >= 2058)
+	float outputmV;
+	if (ADC_in >= 2060)
 	{
-		temp = ADC_in * 4,8828125;	
+		outputmV = (ADC_in * 4.8828125) - 10000.0;	
 	}
-	else if (ADC_in <= 2038)
+	else if (ADC_in <= 2030)
 	{
-		temp = -(10000.0 - ADC_in * 4,8828125);
+		outputmV = (-1)*(10000.0 - ADC_in * 4.8828125);
 	}
 
 	else
 	{
-		temp = 0;	
+		outputmV = 0;	
 	}
-printk("converted value : %d mV \r\n",(int)(temp);
-	return temp;
+printk("converted value : %d mV \r\n",(int)(outputmV));
+	return outputmV;
 }
 /**u16 convert4DAC(float Command)
 {
