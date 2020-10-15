@@ -81,18 +81,18 @@ float convertTomV(u16 ADC_in) // a corriger et compléter
 	float temp;
 	if (ADC_in >= 2058)
 	{
-		temp = ADC_in * 2,441;	
+		temp = ADC_in * 4,8828125;	
 	}
 	else if (ADC_in <= 2038)
 	{
-		temp = -(ADC_in * 2,441);
+		temp = -(10000.0 - ADC_in * 4,8828125);
 	}
 
 	else
 	{
 		temp = 0;	
 	}
-printk("converted value in V: %d \r\n",(int)(temp/1000));
+printk("converted value : %d mV \r\n",(int)(temp);
 	return temp;
 }
 /**u16 convert4DAC(float Command)
