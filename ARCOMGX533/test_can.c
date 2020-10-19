@@ -24,32 +24,34 @@ static RT_TASK tache_horloge;
 //,tache_can;
 //static int temps=0;
 u16 ADC_out;
-float Y[2]; 
-float X[4];
+float Y[2] = {0.0, 0.0 };
+float X[4] = {0.0 ,0.0, 0.0 , 0.0};
+
 float U;
 int temp;
 /* RT_TASK */
 /* tache generation dent de scie */
 void saw(long arg)
 {
+
 		while(1)
 		{
+	
 		setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
-		Y[0]=convertTomV(ADC_out);
-		//Y[0] = (float)ADC_out;
-		temp = (int)Y[0];
-		printk("ADC value on channel 0 : %d Y[0] = %d \r\n",ADC_out,temp);
+		Y[0]=convertToMet(ADC_out); 
+		temp = (int)(Y[0] * 1000.0);
+		printk("ADC position value on channel 0 : %d Y[0] = %d \r\n",ADC_out,temp);
 		rt_task_wait_period();
 
 		setChannel(SINGLE_CHANNEL_1);
 		ADC_out = ReadAD();
-		Y[1]=convertTomV(ADC_out);
-		temp = (int)Y[1];
-		printk("ADC value on channel 1 : %d Y[1] = %d \r\n",ADC_out,temp);
+		Y[1]=convertToRad(ADC_out);
+		temp = (int)(Y[1] * 1000.0);
+		printk("ADC angle value on channel 1 : %d Y[1] = %d \r\n",ADC_out,temp);
 		
 		U = obscont(Y,X);
-		printk("U = %d \r\n",(int)U);
+		printk("\n  commande U = %d \r\n",(int)U);
 		//affichage_mat(4,1,X[4]);
 		//affichage_mat(2,1,Y[2]);
 		//SetDA(SINGLE_CHANNEL_1,U);	
@@ -63,8 +65,8 @@ static int tpcan_init(void) {
 
   int ierr;
   RTIME now;
-	printk("Initializing ADC\r\n");
-	printk("Init successfull, Initializing Channel and range\r\n");	
+	printk(" Initializing ADC\r\n");
+	printk(" Init successfull, Initializing Channel and range\r\n");	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 1, 0);  // avant dernier paramètre à un pour initialiser les calculs en virgules flottante
