@@ -71,7 +71,7 @@ void ADRangeSelect(u8 channel, int range)
 			outb(i,MUX_SCAN);
 			outb(range,DATA_REG);
 		}
-	//setChannel(channel) ; 
+	setChannel(channel) ; 
 	
 	}
 	
@@ -92,9 +92,12 @@ u16 ReadAD(void)
 {
 	u16 output;
 	float ouputF; 
-	printk("starting AD conversion. Writing in Register BASE \r\n");
+	printk("starting AD conversion. Writing in Register BASE of channel Number %d  \r\n", inb(BASE)&0x0F);
 	//printk("STATUS register before conversion: 0x%x\r\n",(inb(STATUS)));
 	outb(0x01,BASE);
+	while((inb(STATUS)&0x80) == 0x80 )
+	{}
+	
 	//printk("STATUS register during conversion: 0x%x\r\n",(inb(STATUS))); 	
 	//printk("BASE register : 0x%x\r\n",inb(BASE));
 	//printk("DATA register : 0x%x\r\n",inb(DATA_REG));
@@ -109,7 +112,7 @@ u16 ReadAD(void)
 		//printk("BASE register : 0x%x read register : %d\r\n", inb(BASE), (inb(BASE) %2));
 		output =  ((inb(DATA_REG) << 4) | ((inb(BASE) >> 4) & 0x0f));
 		//printk("hex value from adc : 0x%x \r\n",output);
-		switch (inb(STATUS) %2 )
+		/*switch (inb(STATUS) %2 )
 		{
 			case 1:
 				printk("Value from ADC : %d from channel n°1 \r\n",output);	
@@ -118,7 +121,7 @@ u16 ReadAD(void)
 			case 0:
 				printk("Value from ADC : %d from channel n°0 \r\n",output);	
 			break;
-		}
+		}*/
 		
 		//printk("STATUS register : 0x%x\r\n",(inb(STATUS)));
 		//printk("Conversion successfull. Writing data from register to memory\r\n");
