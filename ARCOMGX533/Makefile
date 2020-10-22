@@ -2,7 +2,7 @@
 #OBJ_DIR := ${CURRENT}/build/
 obj-m	   := 3712.o 3718.o test_can.o clcmat.o
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
-KIT = arcom11.lan.esiee.fr
+KIT = arcom18.lan.esiee.fr
 CURRENT = 2.6.16.14-arcom1
 KDIR = /usr/lib/arcom/lib/modules/${CURRENT}/build
 PWD = $(shell pwd)

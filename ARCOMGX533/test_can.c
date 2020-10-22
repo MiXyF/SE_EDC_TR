@@ -15,7 +15,7 @@ MODULE_LICENSE("GPL");
 /* define pour tache periodique */
 #define STACK_SIZE  2000
 #define TICK_PERIOD 1000000    //  1 ms
-#define PERIODE_CONTROL 100000000 //20ms
+#define PERIODE_CONTROL 10000000 //10ms
 #define N_BOUCLE 10000000
 #define NUMERO 1
 #define PRIORITE 1
@@ -27,6 +27,7 @@ u16 ADC_out;
 float Y[2] = {0.0, 0.0 };
 float X[4] = {0.0 ,0.0, 0.0 , 0.0};
 
+
 float U;
 int temp;
 /* RT_TASK */
@@ -36,20 +37,22 @@ void saw(long arg)
 
 		while(1)
 		{
-	
+		
 		setChannel(SINGLE_CHANNEL_0);
+		rt_sleep(TICK_PERIOD) ;
 		ADC_out = ReadAD();
 		Y[0]=convertToMet(ADC_out); 
 		temp = (int)(Y[0] * 1000.0);
 		printk("ADC position value on channel 0 : %d Y[0] = %d \r\n",ADC_out,temp);
-		rt_task_wait_period();
+		//rt_task_wait_period();
 
 		setChannel(SINGLE_CHANNEL_1);
+		rt_sleep(TICK_PERIOD) ;
 		ADC_out = ReadAD();
 		Y[1]=convertToRad(ADC_out);
 		temp = (int)(Y[1] * 1000.0);
 		printk("ADC angle value on channel 1 : %d Y[1] = %d \r\n",ADC_out,temp);
-		
+		printk("\n Valeur de X avant operation X[0] = %d,X[1] = %d , X[2] = %d , X[3] =%d \n", (int)(X[0]),(int)(X[1]),(int)(X[2]),(int)(X[3])) ;
 		U = obscont(Y,X);
 		printk("\n  commande U = %d \r\n",(int)U);
 		//affichage_mat(4,1,X[4]);

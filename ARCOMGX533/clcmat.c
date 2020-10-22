@@ -8,6 +8,7 @@
 #include <rtai_fifos.h>
 
 MODULE_LICENSE("GPL");
+
 float obscont(float Y[2],float X[4]) //calculs effectués en mV
 {	
 	float U;	
@@ -33,7 +34,7 @@ float Cdc[4] = 	{ 80.3092,-9.6237 ,-14.1215 ,23.6260   } ;
 
 float Ddc[2] =  { 0.0 , 0.0 } ;	
 	
- 
+ 	//printk("\n Valeur de X avant operation X[0] = %d,X[1] = %d , X[2] = %d , X[3] =%d \n", (int)(X[0]),(int)(X[1]),(int)(X[2]),(int)(X[3])) ;
 float	res11 =     Adc[0][0]*  X[0] +    Adc[0][1]*  X[1] +     Adc[0][2]*  X[2] +     Adc[0][3]*  X[3]  +    Bdc[0][0]*Y[0] +   Bdc[0][1]*Y[1] ; 
 
 float	res21 =     Adc[1][0]*  X[0] +    Adc[1][1]*  X[1] +     Adc[1][2]*  X[2] +     Adc[1][3]*  X[3]  +    Bdc[1][0]*Y[0] +   Bdc[1][1]*Y[1] ; 
@@ -47,7 +48,7 @@ X[1] = res21;
 X[2] = res31;
 X[3] = res41;	
 
-printk("x res = %d,%d,%d,%d", res11,res21,res31,res41) ;
+//printk("x res = %d,%d,%d,%d", res11,res21,res31,res41) ;
 
 U = Cdc[0]* X[0] + Cdc[1]* X[1] + Cdc[2]* X[2]  + Cdc[3]* X[3]  ; 
 
@@ -95,13 +96,40 @@ printk("converted value : %d mV \r\n",(int)(outputmV));
 
 
 float convertToMet(u16 ADC_in) {
- return ((float)ADC_in)/4095.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
-	  
+	float outputMet ;
+	
+	if (ADC_in >= 2060)
+	{
+ 	outputMet= ((float)ADC_in)/4095.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
+
+	}
+	else if (ADC_in <= 2030)
+	{
+	outputMet = ((float)ADC_in)/4095.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	}
+	else {
+	outputMet = 0 ;
+	}
+	printk("Position en metre: %d \r\n",(int)(outputMet*1000.0));
+	return outputMet ; 
 }
 
 float convertToRad(u16 ADC_in) {
- 
- return ((float)ADC_in)*0.6/4095.0 ; // Etendu en radian = 0.3*2  Etendu en tension = 4095	  
+	float outputRad ; 
+	if (ADC_in >= 2060)
+	{
+ 	outputRad= ((float)ADC_in)*0.6/4095.0 ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	}
+	else if (ADC_in <= 2030)
+	{
+	outputRad = ((float)ADC_in)*(-0.6)/4095.0 ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	}
+	else {
+	outputRad = 0 ;
+	}
+	printk("Angle en radian %d \r\n",(int)(outputRad*1000.0));
+	return outputRad ; // Etendu en radian = 0.3*2  Etendu en tension = 4095	
+  
 }
 
 /**u16 convert4DAC(float Command)
