@@ -30,6 +30,7 @@ float X[4] = {0.0,0.0,0.0,0.0};
 
 float U;
 int temp;
+u16 DAC_out;
 /* RT_TASK */
 /* tache generation dent de scie */
 void saw(long arg)
@@ -40,24 +41,33 @@ void saw(long arg)
 		while(1)
 		{
 		
-		//setChannel(SINGLE_CHANNEL_0);
+		setChannel(SINGLE_CHANNEL_0);
 		ADC_out = ReadAD();
-		Y[0]=convertToRad(ADC_out); 
+		printk("Channel 0 : Acquisition terminée. Début de conversion \n");
+		Y[0]=convertToRad(ADC_out);
+		printk("Channel 0 : Conversion terminée \n");
 		temp = (int)(Y[0] * 1000.0);
-		printk("\n ADC angle value on channel %d : %d Y[0] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
-
-		//setChannel(SINGLE_CHANNEL_1);
+		printk("ADC angle value on channel %d : %d Y[0] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
+	
 		
+		setChannel(SINGLE_CHANNEL_1);
+		rt_busy_sleep(TICK_PERIOD);		
 		ADC_out = ReadAD();
+		printk("Channel 1 : Acquisition terminée. Début de conversion \n");
 		Y[1]=convertToMet(ADC_out);
+		printk("Channel 1 : Conversion terminée \n");
 		temp = (int)(Y[1] * 1000.0);
 		printk("ADC position value on channel %d : %d Y[1] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
-		
+		//rt_busy_sleep(PERIODE_CONTROL);
+
 		U = obscont(Y,X);
-		printk("\n  commande U = %d \r\n",(int)U);
+		printk("commande U = %d\n",(int)U);
 		//affichage_mat(4,1,X[4]);
 		//affichage_mat(2,1,Y[2]);
-		//SetDA(SINGLE_CHANNEL_1,U);	
+		printk("Conversion vers DAC\n\n");		
+		DAC_out = convert4DAC(U);
+		printk("DAC_out = %d\n",DAC_out);
+		SetDA(SINGLE_CHANNEL_0,DAC_out);	
 		rt_task_wait_period();
 		}
 
@@ -70,7 +80,7 @@ static int tpcan_init(void) {
   RTIME now;
 	printk(" Initializing ADC\r\n");
 	printk(" Init successfull, Initializing Channel and range\r\n");
-	setChannel(0x10);	
+	//setChannel(0x10);	
     /* creation tache périodiques*/
    rt_set_oneshot_mode();
    ierr = rt_task_init(&tache_horloge,saw,0,STACK_SIZE, PRIORITE, 1, 0);  // avant dernier paramètre à un pour initialiser les calculs en virgules flottante

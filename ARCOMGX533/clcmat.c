@@ -48,7 +48,7 @@ X[1] = res21;
 X[2] = res31;
 X[3] = res41;	
 
-//printk("x res = %d,%d,%d,%d", res11,res21,res31,res41) ;
+printk("x res = %d,%d,%d,%d", res11,res21,res31,res41) ;
 
 U = Cdc[0]* X[0] + Cdc[1]* X[1] + Cdc[2]* X[2]  + Cdc[3]* X[3]  ; 
 
@@ -100,17 +100,19 @@ float convertToMet(u16 ADC_in) {
 	
 	if (ADC_in >= 2060)
 	{
- 	outputMet= ((float)ADC_in)/4095.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
-
+ 	outputMet= ((float)ADC_in)*0.25/2048.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	printk("Position en millimetre: %d \r\n",(int)(outputMet*1000.0));
 	}
 	else if (ADC_in <= 2030)
 	{
-	outputMet = ((float)ADC_in)/4095.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	outputMet = (-0.25)*(4095.0f-(float)ADC_in)/2048.0f ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	printk("Position en millimetre: %d \r\n",(int)(outputMet*1000.0));
 	}
 	else {
 	outputMet = 0 ;
+	printk("Position en millimetre: %d \r\n",(int)(outputMet*1000.0));
 	}
-	printk("Position en metre: %d \r\n",(int)(outputMet*1000.0));
+	
 	return outputMet ; 
 }
 
@@ -118,11 +120,11 @@ float convertToRad(u16 ADC_in) {
 	float outputRad ; 
 	if (ADC_in >= 2060)
 	{
- 	outputRad= ((float)ADC_in)*0.6/4095.0 ; // Etendu position = 0.5*2 Etendu en tension = 4095
+ 	outputRad= ((float)ADC_in)*0.15/2048.0 ;
 	}
 	else if (ADC_in <= 2030)
 	{
-	outputRad = ((float)ADC_in)*(-0.6)/4095.0 ; // Etendu position = 0.5*2 Etendu en tension = 4095
+	outputRad = (4095.0f-(float)ADC_in)*(-0.15)/2048.0 ; 
 	}
 	else {
 	outputRad = 0 ;
@@ -132,16 +134,37 @@ float convertToRad(u16 ADC_in) {
   
 }
 
-/**u16 convert4DAC(float Command)
+u16 convert4DAC(float Command)
 {
-	
-}**/
+	u16 output;
+	printk("vérification débordement\n");	
+	if ((int)Command > 10) {Command = 10.0f;}
+	else if ((int)Command < -10.0f) {Command = -10.0f;}
+ 	printk("Commande = %d\n",(int)Command);
+	if ((int)Command > 0)
+	{
+		printk("Conversion commande positive\n");		
+		output = Command*(4096.0f/20.0f)+2048.0;	
+	}
+	else if ((int)Command < 0)
+	{
+		printk("Conversion commande négative\n");		
+		output = 2048-Command*(-4096.0f/20.0f);
+	}
+	else
+	{
+		Command = 0.0f;
+		output = 2048;	
+	}
+	return output;
+}
 
 EXPORT_SYMBOL(obscont) ; // Rend public les fonction pour les autres modules (.c)
 EXPORT_SYMBOL(affichage_mat) ;
 EXPORT_SYMBOL(convertTomV);
 EXPORT_SYMBOL(convertToRad);
 EXPORT_SYMBOL(convertToMet);
+EXPORT_SYMBOL(convert4DAC);
 
 //module_init(initclc);
 //module_exit(exitclc);

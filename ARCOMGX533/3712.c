@@ -45,7 +45,7 @@ void SetDA(int channel, u16 value)
 	value_msb = value/256 ;
 	value_lsb = value % 256 ;
 
-	//printk("MSB= %d LSB = %d \r\n",value_msb,value_lsb); 
+	printk("MSB= %d LSB = %d \r\n",value_msb,value_lsb); 
 	// Value sur 12 bits or int sur 16 bits
 	if (channel == 0){
 		outb(value_lsb,PCM3712_DA0_LSB); // DEMANDER DECCALAGE OU APPLIQUER UN MASQuE

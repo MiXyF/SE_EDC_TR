@@ -21,6 +21,7 @@ float obscont(float Y[2],float X[4]);
 float convertTomV(u16 ADC_in);
 float convertToMet(u16 ADC_in);
 float convertToRad(u16 ADC_in);
+u16 convert4DAC(float Command);
 
 
 
