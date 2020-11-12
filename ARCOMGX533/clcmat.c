@@ -46,7 +46,7 @@ X[1] = res21;
 X[2] = res31;
 X[3] = res41;	
 
-printk("x res = %d,%d,%d,%d\n", (int)(res11*1000.0),(int)(res21*1000.0),(int)(res31*1000.0),(int)(res41*1000.0)) ;
+//printk("x res = %d,%d,%d,%d\n", (int)(res11*1000.0),(int)(res21*1000.0),(int)(res31*1000.0),(int)(res41*1000.0)) ;
 
 U = Cdc[0]* X[0] + Cdc[1]* X[1] + Cdc[2]* X[2]  + Cdc[3]* X[3] ; 
 

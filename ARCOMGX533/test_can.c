@@ -14,8 +14,9 @@ MODULE_LICENSE("GPL");
 
 /* define pour tache periodique */
 #define STACK_SIZE  2000
-#define TICK_PERIOD 1000000    //  1 ms
-#define PERIODE_CONTROL 50000000 //50ms
+#define TICK_PERIOD 750000    //  0.75 ms
+#define WAIT_PERIOD 750000	// 0.75 ms
+#define PERIODE_CONTROL 20000000 //15ms
 #define N_BOUCLE 10000000
 #define NUMERO 1
 #define PRIORITE 1
@@ -23,11 +24,10 @@ MODULE_LICENSE("GPL");
 static RT_TASK tache_horloge;
 //,tache_can;
 //static int temps=0;
-u16 ADC_out;
+u16 M;
+u16 Rad;
 float Y[2] = {0.0, 0.0};
 float X[4] = {0.0,0.0,0.0,0.0};
-
-
 float U;
 int temp;
 u16 DAC_out;
@@ -42,26 +42,26 @@ void saw(long arg)
 		{
 		
 		setChannel(SINGLE_CHANNEL_0);
-		//rt_busy_sleep(TICK_PERIOD);
-		rt_task_wait_period();
-		ADC_out = ReadAD();
+		rt_busy_sleep(WAIT_PERIOD);
+		Rad = ReadAD();
+		setChannel(SINGLE_CHANNEL_1);		
+		rt_busy_sleep(WAIT_PERIOD);		
+		M = ReadAD();
 		//printk("Channel 0 : Acquisition terminée. Début de conversion \n");
-		//rt_busy_sleep(TICK_PERIOD);
-		Y[0]=convertToRad(ADC_out);
+		Y[0]=convertToRad(Rad);
 		//printk("Channel 0 : Conversion terminée \n");
-		temp = (int)(Y[0] * 1000.0);
+		//temp = (int)(Y[0] * 1000.0);
 		//printk("ADC angle value on channel %d : %d Y[0] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
-		setChannel(SINGLE_CHANNEL_1);
-		rt_task_wait_period();		
-		//rt_busy_sleep(TICK_PERIOD);		
-		ADC_out = ReadAD();
 		//printk("Channel 1 : Acquisition terminée. Début de conversion \n");
-		Y[1]=convertToMet(ADC_out);
+		Y[1]=convertToMet(M);
 		//printk("Channel 1 : Conversion terminée \n");
-		temp = (int)(Y[1] * 1000.0);
+		//temp = (int)(Y[1] * 1000.0);
 		//printk("ADC position value on channel %d : %d Y[1] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
 		//rt_busy_sleep(PERIODE_CONTROL);
-
+		X[0] = 0;
+		X[1] = 0;
+		X[2] = 0;
+		X[3] = 0;
 		U = obscont(Y,X);
 		//printk("commande U = %d\n",(int)(U*1000.0));
 		//affichage_mat(4,1,X[4]);
