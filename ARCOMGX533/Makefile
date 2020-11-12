@@ -2,7 +2,7 @@
 #OBJ_DIR := ${CURRENT}/build/
 obj-m	   := 3712.o 3718.o test_can.o clcmat.o
 PATH := /opt/x86_64/gcc/gcc-3.4.4/bin:$(PATH)
-KIT = arcom16.lan.esiee.fr
+KIT = arcom11.lan.esiee.fr
 CURRENT = 2.6.16.14-arcom1
 KDIR = /usr/lib/arcom/lib/modules/${CURRENT}/build
 PWD = $(shell pwd)
@@ -15,7 +15,7 @@ default:
 	i386 -B --uname-2.6 make -C $(KDIR) M=$(PWD) modules
 
 clean:
-	-rm -f *.o squelette*.ko .*.cmd .*.flags *.mod.c *~
+	-rm -f *.o *.ko .*.cmd .*.flags *.mod.c *~
 	-rm -r .tmp*
 send:
 	scp *.ko runarcom arcom@$(KIT):/home/arcom

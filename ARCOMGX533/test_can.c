@@ -15,7 +15,7 @@ MODULE_LICENSE("GPL");
 /* define pour tache periodique */
 #define STACK_SIZE  2000
 #define TICK_PERIOD 1000000    //  1 ms
-#define PERIODE_CONTROL 100000000 //10ms
+#define PERIODE_CONTROL 50000000 //50ms
 #define N_BOUCLE 10000000
 #define NUMERO 1
 #define PRIORITE 1
@@ -42,31 +42,33 @@ void saw(long arg)
 		{
 		
 		setChannel(SINGLE_CHANNEL_0);
+		//rt_busy_sleep(TICK_PERIOD);
+		rt_task_wait_period();
 		ADC_out = ReadAD();
-		printk("Channel 0 : Acquisition terminée. Début de conversion \n");
+		//printk("Channel 0 : Acquisition terminée. Début de conversion \n");
+		//rt_busy_sleep(TICK_PERIOD);
 		Y[0]=convertToRad(ADC_out);
-		printk("Channel 0 : Conversion terminée \n");
+		//printk("Channel 0 : Conversion terminée \n");
 		temp = (int)(Y[0] * 1000.0);
-		printk("ADC angle value on channel %d : %d Y[0] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
-	
-		
+		//printk("ADC angle value on channel %d : %d Y[0] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
 		setChannel(SINGLE_CHANNEL_1);
-		rt_busy_sleep(TICK_PERIOD);		
+		rt_task_wait_period();		
+		//rt_busy_sleep(TICK_PERIOD);		
 		ADC_out = ReadAD();
-		printk("Channel 1 : Acquisition terminée. Début de conversion \n");
+		//printk("Channel 1 : Acquisition terminée. Début de conversion \n");
 		Y[1]=convertToMet(ADC_out);
-		printk("Channel 1 : Conversion terminée \n");
+		//printk("Channel 1 : Conversion terminée \n");
 		temp = (int)(Y[1] * 1000.0);
-		printk("ADC position value on channel %d : %d Y[1] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
+		//printk("ADC position value on channel %d : %d Y[1] = %d \r\n",inb(BASE)&0x0F,ADC_out,temp);
 		//rt_busy_sleep(PERIODE_CONTROL);
 
 		U = obscont(Y,X);
-		printk("commande U = %d\n",(int)U);
+		//printk("commande U = %d\n",(int)(U*1000.0));
 		//affichage_mat(4,1,X[4]);
 		//affichage_mat(2,1,Y[2]);
-		printk("Conversion vers DAC\n\n");		
+		//printk("Conversion vers DAC\n\n");		
 		DAC_out = convert4DAC(U);
-		printk("DAC_out = %d\n",DAC_out);
+		//printk("DAC_out = %d\n",DAC_out);
 		SetDA(SINGLE_CHANNEL_0,DAC_out);	
 		rt_task_wait_period();
 		}

@@ -17,7 +17,7 @@ static int init3718(void)
 	outb(CTR_MODE_NO_INT,CONTROL); //Interrupt enabled for DMA | Interrupt level N/A | DMA enabled | Trigger source : software
 	ADRangeSelect(SINGLE_CHANNEL_1,RANGE_10_NEG_PLS);
 	ADRangeSelect(SINGLE_CHANNEL_0,RANGE_10_NEG_PLS);
-	printk("DATA register on init : 0x%x\r\n",inb(DATA_REG));
+	//printk("DATA register on init : 0x%x\r\n",inb(DATA_REG));
 	//if (inb(STATUS) == STATUS_INIT)
 	//{
 	//	printk("init complete, MUX on 16 channels mode, ready to convert \r\n");
@@ -34,7 +34,7 @@ static int init3718(void)
 void setChannel(int in_channel)
 {
 	outb(in_channel,MUX_SCAN);
-	printk("Channel set to n°%d\r\n",in_channel);
+	//printk("Channel set to n°%d\r\n",in_channel);
 }
 
 void ADRangeSelect(u8 channel, int range)
@@ -53,8 +53,8 @@ void ADRangeSelect(u8 channel, int range)
 	
 	start = channel & 0x0F ; //Collect the start channel
 	end = channel >> 4 ; // Collect the end channel
-	printk("\n Start channel is n°%d\r\n",start);
-	printk("End channel is n°%d\r\n \n",end);
+	//printk("\n Start channel is n°%d\r\n",start);
+	//printk("End channel is n°%d\r\n \n",end);
 	if(start != end)
 	{
 		if(start > end)
@@ -62,7 +62,7 @@ void ADRangeSelect(u8 channel, int range)
 			transitoire = start ;
 			start = end ;
 			end = transitoire ;
-			printk("\n start et end sont différent ") ;
+			//printk("\n start et end sont différent ") ;
 		}	
 
 		for (i = start ; i <= end ; i++) // Set the range for all channel used or for just 1 if start = end
@@ -78,7 +78,7 @@ void ADRangeSelect(u8 channel, int range)
 	else 
 	{
 	setChannel(channel) ;
-	printk(" \n start et end sont identique") ;
+	//printk(" \n start et end sont identique") ;
 	outb(range,DATA_REG);
 	}
 	
@@ -92,7 +92,7 @@ u16 ReadAD(void)
 {
 	u16 output;
 	float outputF; 
-	printk("starting AD conversion. Writing in Register BASE of channel Number %d  \r\n", inb(BASE)&0x0F);
+	//printk("starting AD conversion. Writing in Register BASE of channel Number %d  \r\n", inb(BASE)&0x0F);
 	//printk("STATUS register before conversion: 0x%x\r\n",(inb(STATUS)));
 	outb(0x01,BASE);
 	while((inb(STATUS)&0x80) == 0x80 )
